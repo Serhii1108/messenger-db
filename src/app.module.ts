@@ -7,6 +7,8 @@ import { dataSource } from './ormconfig.js';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
 
+import { UsersModule } from './modules/users/users.module.js';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -14,6 +16,7 @@ import { AppService } from './app.service.js';
       envFilePath: '.env',
     }),
     TypeOrmModule.forRoot(dataSource.options),
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
