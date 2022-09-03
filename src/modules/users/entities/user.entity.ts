@@ -6,10 +6,10 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   id: uuid;
 
-  @Column()
+  @Column({ unique: true })
   login: string;
 
-  @Column()
+  @Column({ unique: true })
   phoneNumber: string;
 
   @Column('date')

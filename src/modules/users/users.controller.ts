@@ -18,7 +18,7 @@ import { User } from './entities/user.entity.js';
 import { UsersService } from './users.service.js';
 
 import { CreateUserDto } from './dto/create-user.dto.js';
-import { UpdateUserDto } from './dto/update-user.dto.js';
+import { UpdateUserLoginDto } from './dto/update-user.dto.js';
 import { UpdatePasswordDto } from './dto/update-password.dto.js';
 import { DeleteUserDto } from './dto/delete-user.dto.js';
 
@@ -46,11 +46,11 @@ export class UsersController {
   }
 
   @Patch(':id')
-  async updateUser(
+  async updateUserLogin(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: uuid,
-    @Body() updateUserDto: UpdateUserDto,
+    @Body() updateUserDto: UpdateUserLoginDto,
   ): Promise<User> {
-    return await this.usersService.updateUser(id, updateUserDto);
+    return await this.usersService.updateUserLogin(id, updateUserDto);
   }
 
   @Put(':id')
