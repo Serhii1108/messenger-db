@@ -15,7 +15,7 @@ import {
 } from '@nestjs/common';
 
 import { User } from './entities/user.entity.js';
-import { UsersService } from './users.service.js';
+import { UsersService } from './services/users.service.js';
 
 import { CreateUserDto } from './dto/create-user.dto.js';
 import { UpdateUserLoginDto } from './dto/update-user.dto.js';

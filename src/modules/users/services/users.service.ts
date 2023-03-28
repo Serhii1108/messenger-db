@@ -7,13 +7,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import bcrypt from 'bcrypt';
 
-import { User } from './entities/user.entity.js';
-import { CreateUserDto } from './dto/create-user.dto.js';
-import { UpdateUserLoginDto } from './dto/update-user.dto.js';
-import { UpdatePasswordDto } from './dto/update-password.dto.js';
-import { DeleteUserDto } from './dto/delete-user.dto.js';
+import { User } from '../entities/user.entity.js';
+import { CreateUserDto } from '../dto/create-user.dto.js';
+import { UpdateUserLoginDto } from '../dto/update-user.dto.js';
+import { UpdatePasswordDto } from '../dto/update-password.dto.js';
+import { DeleteUserDto } from '../dto/delete-user.dto.js';
 
-import { hashPassword } from '../../utils/hashPassword.js';
+import { hashPassword } from '../../../utils/hashPassword.js';
 
 @Injectable()
 export class UsersService {
@@ -26,7 +26,7 @@ export class UsersService {
     const createdAt = new Date();
     const hashedPass = await hashPassword(password);
 
-    await this.checkUniq(login);
+    await this.checkUniq(login, phoneNumber);
 
     const createdUser: User = this.usersRepository.create({
       login,
@@ -54,13 +54,14 @@ export class UsersService {
 
   async updateUserLogin(
     id: uuid,
-    { login: newLogin }: UpdateUserLoginDto,
+    { login: newLogin, phoneNumber: newPhoneNumber }: UpdateUserLoginDto,
   ): Promise<User> {
     const user: User = await this.findOne(id);
 
-    await this.checkUniq(newLogin);
+    await this.checkUniq(newLogin ?? '', newPhoneNumber ?? '');
 
     user.login = newLogin ?? user.login;
+    user.phoneNumber = newPhoneNumber ?? user.phoneNumber;
 
     await this.usersRepository.save(user);
 
@@ -93,9 +94,12 @@ export class UsersService {
     await this.usersRepository.delete(user);
   }
 
-  private async checkUniq(login: string) {
-    if ((await this.usersRepository.findOneBy({ login })) === null) {
+  private async checkUniq(login: string, phoneNumber: string) {
+    if ((await this.usersRepository.findOneBy({ login })) !== null) {
       throw new ForbiddenException('User with this login already exist');
+    }
+    if ((await this.usersRepository.findOneBy({ phoneNumber })) !== null) {
+      throw new ForbiddenException('User with this phone number already exist');
     }
   }
 }

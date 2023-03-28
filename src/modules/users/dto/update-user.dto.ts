@@ -4,4 +4,8 @@ export class UpdateUserLoginDto {
   @IsOptional()
   @IsString()
   login: string;
+
+  @IsOptional()
+  @IsString()
+  phoneNumber: string;
 }
