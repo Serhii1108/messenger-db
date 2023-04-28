@@ -20,7 +20,6 @@ import { UsersService } from './services/users.service.js';
 import { CreateUserDto } from './dto/create-user.dto.js';
 import { UpdateUserLoginDto } from './dto/update-user.dto.js';
 import { UpdatePasswordDto } from './dto/update-password.dto.js';
-import { DeleteUserDto } from './dto/delete-user.dto.js';
 
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('api/users')
@@ -57,16 +56,13 @@ export class UsersController {
   async updatePassword(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: uuid,
     @Body() updatePasswordDto: UpdatePasswordDto,
-  ) {
+  ): Promise<User> {
     return await this.usersService.updatePassword(id, updatePasswordDto);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async remove(
-    @Param('id', new ParseUUIDPipe({ version: '4' })) id: uuid,
-    @Body() deleteUserDto: DeleteUserDto,
-  ) {
-    return await this.usersService.remove(id, deleteUserDto);
+  async remove(@Param('id', new ParseUUIDPipe({ version: '4' })) id: uuid) {
+    return await this.usersService.remove(id);
   }
 }

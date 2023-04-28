@@ -11,7 +11,6 @@ import { User } from '../entities/user.entity.js';
 import { CreateUserDto } from '../dto/create-user.dto.js';
 import { UpdateUserLoginDto } from '../dto/update-user.dto.js';
 import { UpdatePasswordDto } from '../dto/update-password.dto.js';
-import { DeleteUserDto } from '../dto/delete-user.dto.js';
 
 import { hashPassword } from '../../../utils/hashPassword.js';
 
@@ -85,12 +84,8 @@ export class UsersService {
     return await this.findOne(user.id);
   }
 
-  async remove(id: uuid, { password }: DeleteUserDto) {
+  async remove(id: uuid) {
     const user: User = await this.findOne(id);
-
-    const match = await bcrypt.compare(password, user.password);
-    if (!match) throw new ForbiddenException('Password is wrong');
-
     await this.usersRepository.delete(user);
   }
 
