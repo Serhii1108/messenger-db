@@ -51,6 +51,16 @@ export class UsersService {
     return user;
   }
 
+  async findOneByLogin(login: string): Promise<User> {
+    const user: User | undefined = await this.usersRepository.findOneBy({
+      login,
+    });
+
+    if (!user) throw new NotFoundException('User not found');
+
+    return user;
+  }
+
   async updateUserLogin(
     id: uuid,
     { login: newLogin, phoneNumber: newPhoneNumber }: UpdateUserLoginDto,

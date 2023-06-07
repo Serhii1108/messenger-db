@@ -40,6 +40,11 @@ export class UsersController {
     return await this.usersService.findAll();
   }
 
+  @Get('/login/:login')
+  async findOneByLogin(@Param('login') login: string): Promise<User> {
+    return await this.usersService.findOneByLogin(login);
+  }
+
   @Get(':id')
   async findOne(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: uuid,

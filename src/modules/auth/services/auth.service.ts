@@ -11,6 +11,7 @@ import bcrypt from 'bcrypt';
 import { User } from '../../users/entities/user.entity.js';
 import { UsersService } from '../../users/services/users.service.js';
 import { CreateUserDto } from '../../users/dto/create-user.dto.js';
+import { RefreshTokenDto } from '../dto/refresh-token.dto.js';
 
 interface Payload {
   login: string;
@@ -55,7 +56,7 @@ export class AuthService {
     return this.createTokens({ login, sub: user.id });
   }
 
-  async refresh(refreshToken: string) {
+  async refresh({ refreshToken }: RefreshTokenDto) {
     if (!refreshToken || typeof refreshToken !== 'string') {
       throw new UnauthorizedException();
     }
