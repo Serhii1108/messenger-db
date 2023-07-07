@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Like } from 'typeorm';
 import bcrypt from 'bcrypt';
 
 import { User } from '../entities/user.entity.js';
@@ -54,6 +54,16 @@ export class UsersService {
   async findOneByLogin(login: string): Promise<User> {
     const user: User | undefined = await this.usersRepository.findOneBy({
       login,
+    });
+
+    if (!user) throw new NotFoundException('User not found');
+
+    return user;
+  }
+
+  async findAllByLogin(login: string): Promise<User[]> {
+    const user: User[] | undefined = await this.usersRepository.findBy({
+      login: Like(`%${login}%`),
     });
 
     if (!user) throw new NotFoundException('User not found');
