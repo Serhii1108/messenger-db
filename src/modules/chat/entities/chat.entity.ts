@@ -17,6 +17,6 @@ export class Chat {
   @Column('json')
   conversation: Message[];
 
-  @Column('date')
+  @Column({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 }
