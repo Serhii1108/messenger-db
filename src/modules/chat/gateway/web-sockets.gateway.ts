@@ -7,6 +7,7 @@ import { Socket, Server } from 'socket.io';
 
 import { ChatService } from '../services/chat.service.js';
 import { SendMessageModel, socketEvents } from '../models/message.model.js';
+import { Chat } from '../entities/chat.entity.js';
 
 @WebSocketGateway({
   cors: {
@@ -52,5 +53,20 @@ export class WebSocketsGateway {
         .to(payload.roomName)
         .emit(socketEvents.CHAT_OFFLINE, { chatId: payload.roomName });
     }
+  }
+
+  @SubscribeMessage(socketEvents.MARK_MESSAGES_AS_READ)
+  async handleMarkMessagesAsRead(
+    client: Socket,
+    payload: {
+      roomName: string;
+      userId: uuid;
+    },
+  ) {
+    const chat: Chat = await this.chatService.updateMessagesSeen(
+      payload.roomName,
+      payload.userId,
+    );
+    this.server.to(payload.roomName).emit(socketEvents.MESSAGES_READ, { chat });
   }
 }

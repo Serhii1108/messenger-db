@@ -18,4 +18,6 @@ export enum socketEvents {
   CHAT_ONLINE = 'chat_online',
   CHAT_OFFLINE = 'chat_offline',
   CHECK_ONLINE = 'check_online',
+  MARK_MESSAGES_AS_READ = 'mark_messages_as_read',
+  MESSAGES_READ = 'messages_read',
 }

@@ -85,4 +85,16 @@ export class ChatService {
       return chat;
     });
   }
+
+  async updateMessagesSeen(chatId: string, userId: uuid): Promise<Chat> {
+    const chat: Chat = await this.findOne(chatId);
+
+    for (let i = chat.conversation.length - 1; i >= 0; i--) {
+      if (chat.conversation[i].senderId !== userId) {
+        chat.conversation[i].isSeen = true;
+      } else break;
+    }
+    await this.chatRepository.save(chat);
+    return await this.findOne(chatId);
+  }
 }
