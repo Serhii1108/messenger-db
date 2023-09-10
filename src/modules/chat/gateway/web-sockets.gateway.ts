@@ -29,6 +29,7 @@ export class WebSocketsGateway {
     client.join(payload.roomName);
 
     if ((await this.server.in(payload.roomName).fetchSockets()).length === 2) {
+      this.chatService.setChatStatus(payload.roomName, true);
       this.server
         .to(payload.roomName)
         .emit(socketEvents.CHAT_ONLINE, { chatId: payload.roomName });
@@ -49,6 +50,7 @@ export class WebSocketsGateway {
     },
   ) {
     if ((await this.server.in(payload.roomName).fetchSockets()).length !== 2) {
+      this.chatService.setChatStatus(payload.roomName, false);
       this.server
         .to(payload.roomName)
         .emit(socketEvents.CHAT_OFFLINE, { chatId: payload.roomName });

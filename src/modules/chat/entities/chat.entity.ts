@@ -19,4 +19,7 @@ export class Chat {
 
   @Column({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
+
+  @Column({ type: 'boolean', default: false })
+  isOnline: boolean;
 }

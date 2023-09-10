@@ -97,4 +97,11 @@ export class ChatService {
     await this.chatRepository.save(chat);
     return await this.findOne(chatId);
   }
+
+  async setChatStatus(chatId: string, status: boolean): Promise<Chat> {
+    const chat: Chat = await this.findOne(chatId);
+    chat.isOnline = status;
+    await this.chatRepository.save(chat);
+    return await this.findOne(chatId);
+  }
 }
