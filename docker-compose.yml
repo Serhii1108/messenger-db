@@ -15,7 +15,7 @@ services:
       - db
     volumes:
       - app:/home/app
-    restart: always
+    restart: on-failure
     networks:
       - messenger-db-network
     command: npm run start:prod
@@ -33,7 +33,7 @@ services:
       - '${POSTGRES_PORT}:${POSTGRES_PORT}'
     volumes:
       - postgres:/var/lib/postgresql/data
-    restart: always
+    restart: on-failure
     networks:
       - messenger-db-network
 volumes:
